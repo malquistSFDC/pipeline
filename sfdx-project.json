@@ -8,5 +8,6 @@
   "name": "pipeline",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "54.0"
+  "sourceApiVersion": "54.0",
+  "oauthLocalPort" : "1919"
 }
