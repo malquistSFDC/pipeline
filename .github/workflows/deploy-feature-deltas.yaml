@@ -1,0 +1,68 @@
+# # This is a basic workflow that is triggered by a push from a branch with the naming convention "feature/*"
+# # This workflow utilizes acu-pack to create a delta package containing only what was changed
+# # Feature branch is automatically merged into TARGET_BRANCH if Salesforce deployment is successful
+# # Update the TARGET_BRANCH to the branch you want feature branches to be merged into
+# # Update the SOURCE_DIR to the directory you want acu-pack to create a delta package from
+
+# # This job is currently WIP
+
+# name: Deploy Deltas on PR Push
+
+# on:
+#   pull_request:
+#     branches:
+#       - develop
+#     types: [closed]
+#     paths:
+#       - force-app/**
+#       - manifest/package.xml
+  
+# env:
+#   SFDX_AUDIENCE_URL: https://test.salesforce.com
+#   SALESFORCE_ORG_USERNAME: malquist@salesforce.com.ntiacrm.staging # Salesforce username of target org
+#   SALESFORCE_ORG_URL: https://ntiacrmgrants--staging.my.salesforce.com # Salesforce URL of target org
+#   SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY }} # SFDX App consumer key from target org
+#   SOURCE_DIR: force-app # Directory you want acu-pack to create a delta package from
+#   TARGET_BRANCH: staging # Git branch to merge feature branch into
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     if: github.event.pull_request.merged == true
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           fetch-depth: 0
+      
+#       - name: Setup Node.js environment
+#         uses: actions/setup-node@v3.1.1
+      
+#       - name: Install SFDX
+#         run: |
+#           npm install --global sfdx-cli
+#           sfdx --version
+      
+#       - name: Install acu-pack
+#         run: |
+#           echo "y" | sfdx plugins:install https://${{ secrets.ACUPACK_CREDS }}@github.com/CSGAMERSServices/acu-pack.git
+          
+#       - name: Setup Git User
+#         run: |
+#           git config user.name "GitHub Actions Bot"
+#           git config user.email "<>"
+      
+#       - name: Authenticate Salesforce Org
+#         run: |
+#           echo "${{ secrets.JWTKEY }}" > server.key
+#           sfdx force:auth:jwt:grant --jwtkeyfile server.key --clientid "${SALESFORCE_CONSUMER_KEY}" --username "${SALESFORCE_ORG_USERNAME}" --instanceurl "${SALESFORCE_ORG_URL}"
+      
+#       - name: Generate Deploy Package
+#         run: |
+#           git --no-pager diff HEAD^ --name-status --no-renames > git_diff.txt
+#           mkdir deploy
+#           sfdx acumen:source:delta:git -g git_diff.txt -s "${SOURCE_DIR}" -d deploy
+
+#       - name: Deploy Delta Package to Target Org
+#         run: |
+#           # sfdx force:source:deploy -x manifest/package.xml -u "${SALESFORCE_ORG_USERNAME}" --json
+#           sfdx force:source:deploy -p deploy -u "${SALESFORCE_ORG_USERNAME}" --json
