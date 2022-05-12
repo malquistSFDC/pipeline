@@ -27,19 +27,13 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    container:
+      image: abirch216/salesforce_devops:sfdx
     if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.1.1
-      
-      - name: Install SFDX
-        run: |
-          npm install --global sfdx-cli
-          sfdx --version
       
       - name: Install acu-pack
         run: |
