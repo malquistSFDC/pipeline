@@ -1,7 +1,7 @@
 name: Merge Package.xml Into Master-Package.xml
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       branch:
         description: 'What branch needs the merge?'
