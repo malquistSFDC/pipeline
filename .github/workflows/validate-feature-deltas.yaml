@@ -44,9 +44,9 @@ jobs:
       #     npm install --global sfdx-cli
       #     sfdx --version
           
-      # - name: Install acu-pack
-      #   run: |
-      #     echo "y" | sfdx plugins:install https://${{ secrets.ACUPACK_CREDS }}@github.com/CSGAMERSServices/acu-pack.git
+      - name: Install acu-pack
+        run: |
+          echo "y" | sfdx plugins:install https://${{ secrets.ACUPACK_CREDS }}@github.com/CSGAMERSServices/acu-pack.git
       
       - name: Authenticate Salesforce Org
         run: |
