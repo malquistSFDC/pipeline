@@ -17,7 +17,7 @@ env:
   SOURCE_DIR: force-app # Directory you want acu-pack to create a delta package from
 
 jobs:
-    merge-into-master-package:
+  merge-into-master-package:
     runs-on: ubuntu-latest
     container:
       image: abirch216/salesforce_devops:sfdx
