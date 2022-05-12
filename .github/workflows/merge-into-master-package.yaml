@@ -1,3 +1,5 @@
+# Merge package.xml into master-package.xml
+
 name: Merge Package.xml Into Master-Package.xml
 
 on:
