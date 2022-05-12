@@ -23,7 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: abirch216/salesforce_devops:sfdx
-    needs: deploy
     steps:
       - uses: actions/checkout@v2
         with:
