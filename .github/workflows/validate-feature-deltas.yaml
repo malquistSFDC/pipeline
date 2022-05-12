@@ -25,24 +25,24 @@ jobs:
   validate:
     name: Validate Deltas
     runs-on: ubuntu-latest
-    # container:
-    #   image: abirch216/salesforce_devops:sfdx
+    container:
+      image: abirch216/salesforce_devops:sfdx
 
     steps:
-    #   - name: adding github workspace as safe directory
-    #     run: git config --global --add safe.directory $GITHUB_WORKSPACE
+      - name: adding github workspace as safe directory
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
       
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
       
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.1.1
+      # - name: Setup Node.js environment
+      #   uses: actions/setup-node@v3.1.1
       
-      - name: Install SFDX
-        run: |
-          npm install --global sfdx-cli
-          sfdx --version
+      # - name: Install SFDX
+      #   run: |
+      #     npm install --global sfdx-cli
+      #     sfdx --version
           
       - name: Install acu-pack
         run: |
@@ -86,12 +86,12 @@ jobs:
         if: ${{ always() }}
         run: |
           (
-          RESULTS=$(cat results.txt)
-          echo ${RESULTS}
-          RESULTS="${RESULTS//'%'/'%25'}"
-          RESULTS="${RESULTS//$'\n'/'%0A'}"
-          RESULTS="${RESULTS//$'\r'/'%0D'}"
-          echo "::set-output name=results::${RESULTS}"
+            RESULTS=$(cat results.txt)
+            echo ${RESULTS}
+            RESULTS="${RESULTS//'%'/'%25'}"
+            RESULTS="${RESULTS//$'\n'/'%0A'}"
+            RESULTS="${RESULTS//$'\r'/'%0D'}"
+            echo "::set-output name=results::${RESULTS}"
           )
           shell: bash
 
