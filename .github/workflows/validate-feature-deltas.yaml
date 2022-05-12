@@ -79,7 +79,7 @@ jobs:
               sfdx force:source:deploy -c -u "${SALESFORCE_ORG_USERNAME}" -p deploy -l NoTestRun -g | tee results.txt
             fi
           )
-          shell: bash
+        shell: bash
 
       - name: Collect Results
         id: collect-results
@@ -93,7 +93,7 @@ jobs:
             RESULTS="${RESULTS//$'\r'/'%0D'}"
             echo "::set-output name=results::${RESULTS}"
           )
-          shell: bash
+        shell: bash
 
       - name: Update Pull Request
         if: ${{ always() }}
