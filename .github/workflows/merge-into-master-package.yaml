@@ -24,6 +24,9 @@ jobs:
     container:
       image: abirch216/salesforce_devops:sfdx
     steps:
+      - name: adding github workspace as safe directory
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
       - uses: actions/checkout@v2
         with:
           ref: ${{ inputs.branch }}
