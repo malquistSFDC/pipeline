@@ -28,7 +28,7 @@ jobs:
     # container:
     #   image: abirch216/salesforce_devops:sfdx
 
-    # steps:
+    steps:
     #   - name: adding github workspace as safe directory
     #     run: git config --global --add safe.directory $GITHUB_WORKSPACE
       
@@ -91,7 +91,6 @@ jobs:
           RESULTS="${RESULTS//$'\n'/'%0A'}"
           RESULTS="${RESULTS//$'\r'/'%0D'}"
           echo "::set-output name=results::${RESULTS}"
-
 
       - name: Update Pull Request
         if: ${{ always() }}
