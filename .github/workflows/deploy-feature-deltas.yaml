@@ -23,6 +23,7 @@ env:
   SALESFORCE_ORG_URL: https://acumensolutionsasalesforc34-dev-ed.my.salesforce.com # Salesforce URL of target org
   SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY_DEV }} # SFDX App consumer key from target org
   SOURCE_DIR: force-app # Directory you want acu-pack to create a delta package from
+  HOME: /root
 
 jobs:
   deploy:
