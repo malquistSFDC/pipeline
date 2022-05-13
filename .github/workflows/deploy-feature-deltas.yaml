@@ -32,6 +32,9 @@ jobs:
       image: jfgarcia268/vlocity_sfdx:core
     if: github.event.pull_request.merged == true
     steps:
+      - name: adding github workspace as safe directory
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
