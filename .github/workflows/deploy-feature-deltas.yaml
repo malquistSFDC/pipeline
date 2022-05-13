@@ -28,16 +28,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     container:
-      image: abirch216/salesforce_devops:sfdx
+      image: jfgarcia268/vlocity_sfdx:core
     if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      
-      - name: Install acu-pack
-        run: |
-          echo "y" | sfdx plugins:install https://${{ secrets.ACUPACK_CREDS }}@github.com/CSGAMERSServices/acu-pack.git
           
       - name: Setup Git User
         run: |
