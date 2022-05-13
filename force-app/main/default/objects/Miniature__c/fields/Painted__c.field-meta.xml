@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Painted__c</fullName>
     <defaultValue>false</defaultValue>
-    <description>Does the miniature come painted or not?</description>
+    <description>Does the miniature come painted?</description>
     <externalId>false</externalId>
     <label>Painted?</label>
     <trackTrending>false</trackTrending>
