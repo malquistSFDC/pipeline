@@ -20,13 +20,14 @@ env:
   SALESFORCE_ORG_URL: https://acumensolutionsasalesforc34-dev-ed.my.salesforce.com # Salesforce URL of target org
   SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY_DEV }} # SFDX App consumer key from target org
   SOURCE_DIR: force-app # Directory you want acu-pack to create a delta package from
+  HOME: /root
 
 jobs:
   validate:
     name: Validate Deltas
     runs-on: ubuntu-latest
     container:
-      image: abirch216/salesforce_devops:sfdx
+      image: jfgarcia268/vlocity_sfdx:core
 
     steps:
       - name: adding github workspace as safe directory
@@ -35,10 +36,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          
-      - name: Install acu-pack
-        run: |
-          echo "y" | sfdx plugins:install https://${{ secrets.ACUPACK_CREDS }}@github.com/CSGAMERSServices/acu-pack.git
       
       - name: Authenticate Salesforce Org
         run: |
