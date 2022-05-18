@@ -1,0 +1,76 @@
+# This is a basic workflow that is triggered by a new pull request to a specific branch
+# Branch is specified below: [on: -> pull_request: -> branches: -> main (switch this)]
+# This workflow utilizes acu-pack to create a delta package containing only what was changed
+# Workflow checks out merge commit from PR and validates to Salesforce
+# Pair this workflow with the deploy-deltas-on-pr-merged to have changes validated and reviewed before the deployment
+# Update the SOURCE_DIR to the directory you want acu-pack to create a delta package from
+
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      RELEASE_TITLE:
+        description: 'Release Name'
+        required: true
+        type: string
+      RELEASE_VERSION:
+        description: 'Release Version'
+        required: true
+        type: string
+  
+env:
+  SFDX_AUDIENCE_URL: https://test.salesforce.com
+  SALESFORCE_ORG_USERNAME: malquist@salesforce.com.tester # Salesforce username of target org
+  SALESFORCE_ORG_URL: https://acumensolutions-1fd-dev-ed.my.salesforce.com/ # Salesforce URL of target org
+  SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY_PROD }} # SFDX App consumer key from target org
+  SOURCE_DIR: force-app # Directory you want acu-pack to create a delta package from
+  BASE_BRANCH: main
+  RELEASE_BRANCH: release/${{ inputs.RELEASE_VERSION }}
+  HOME: /root
+
+jobs:
+  
+  create-release-branch:
+    name: Create Release Branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: develop
+      - name: Setup Git User
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: Create Release Branch
+        run: |
+          git checkout -b ${RELEASE_BRANCH}
+          git push origin ${RELEASE_BRANCH}
+          echo "${RELEASE_BRANCH} has been created."
+  
+  create-pull-request:
+    name: Create Pull Request
+    runs-on: ubuntu-latest
+    needs: create-release-branch
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${RELEASE_BRANCH}
+      - name: Setup Git User
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: Create Pull Request For Release
+        run: |
+          curl -X POST "https://api.github.com/repos/${{ github.repository }}/pulls" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.ACUPACK_CREDS }}" \
+            -d '{"head":"${{ github.ref_name }}","base":"${{ env.BASE_BRANCH }}","title":"${{ github.ref_name }}"}' \
+            -o output.txt
+
+          PULL_REQUEST_NUMBER=$(cat output.txt | jq -r '.number')
+
+          curl -X POST "https://api.github.com/repos/${{ github.repository }}/issues/${PULL_REQUEST_NUMBER}/comments" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.ACUPACK_CREDS }}" \
+            -d '{"body":"@${{ github.actor }}"}'
