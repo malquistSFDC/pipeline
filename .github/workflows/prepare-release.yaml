@@ -27,7 +27,6 @@ env:
   SOURCE_DIR: force-app # Directory you want acu-pack to create a delta package from
   BASE_BRANCH: main
   RELEASE_BRANCH: release/${{ inputs.RELEASE_VERSION }}
-  HOME: /root
 
 jobs:
   
