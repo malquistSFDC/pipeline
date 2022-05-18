@@ -22,7 +22,7 @@ jobs:
   merge-into-master-package:
     runs-on: ubuntu-latest
     container:
-      image: abirch216/salesforce_devops:sfdx
+      image: jfgarcia268/vlocity_sfdx:core
     steps:
       - name: adding github workspace as safe directory
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
@@ -30,10 +30,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ inputs.branch }}
-      
-      - name: Install acu-pack
-        run: |
-          echo "y" | sfdx plugins:install https://${{ secrets.ACUPACK_CREDS }}@github.com/CSGAMERSServices/acu-pack.git
           
       - name: Setup Git User
         run: |
