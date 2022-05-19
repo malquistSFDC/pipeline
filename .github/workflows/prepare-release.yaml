@@ -43,6 +43,7 @@ jobs:
           git config user.email "<>"
       - name: Create Release Branch
         run: |
+          echo "Preparing to create ${{ env.RELEASE_BRANCH }}"
           git checkout -b ${{ env.RELEASE_BRANCH }}
           git push origin ${{ env.RELEASE_BRANCH }}
           echo "${{ env.RELEASE_BRANCH }} has been created."
