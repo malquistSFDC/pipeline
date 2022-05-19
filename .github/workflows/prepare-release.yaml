@@ -26,7 +26,7 @@ env:
   SALESFORCE_CONSUMER_KEY: ${{ secrets.SALESFORCE_CONSUMER_KEY_PROD }} # SFDX App consumer key from target org
   SOURCE_DIR: force-app # Directory you want acu-pack to create a delta package from
   BASE_BRANCH: main
-  RELEASE_BRANCH: "release/${{ inputs.RELEASE_VERSION }}"
+  RELEASE_BRANCH: "release/${{ github.event.inputs.RELEASE_VERSION }}"
 
 jobs:
   
